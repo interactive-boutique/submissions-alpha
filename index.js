@@ -1,12 +1,31 @@
+/*eslint strict:0, no-var:0, vars-on-top:0*/
+/*global moment:false, Sortable:false*/
+/*exported parseData*/
+'use strict'
+
 function parseData(res) {
   var data = res.feed.entry.map(function(row) {
+    
+    var startDate = moment(row.gsx$eventstartdate.$t, "M/D/YYYY", true)
+    if(!startDate.isValid()) {
+      startDate = row.gsx$eventstartdate.$t
+    }
+    var endDate = moment(row.gsx$eventenddate.$t, "M/D/YYYY", true)
+    if(!endDate.isValid()) {
+      endDate = row.gsx$eventenddate.$t
+    }
+    var submissionDeadline = moment(row.gsx$submissiondeadline.$t, "M/D/YYYY", true)
+    if(!submissionDeadline.isValid()) {
+      submissionDeadline = row.gsx$submissiondeadline.$t
+    }
     return {
       name: row.gsx$name.$t,
-      date: row.gsx$date.$t,
+      startDate: startDate,
+      endDate: endDate,
       website: row.gsx$website.$t,
       location: row.gsx$location.$t,
       notes: row.gsx$notes.$t,
-      submissionDeadline: row.gsx$submissiondeadline.$t,
+      submissionDeadline: submissionDeadline,
       whereToSubmit: row.gsx$wheretosubmit.$t
     }
   })
@@ -19,25 +38,59 @@ function parseData(res) {
   data.forEach(function(row) {
     var newEntry = entry.cloneNode(true)
     
-    var name = newEntry.querySelector('.name a')
-    name.textContent = row.name
-    name.setAttribute('href', row.website)
+    var nameCell = newEntry.querySelector('.name a')
+    nameCell.textContent = row.name
+    nameCell.setAttribute('href', row.website)
     
-    var submission = newEntry.querySelector('.submission a')
-    submission.textContent = row.submissionDeadline
+    var submissionCell = newEntry.querySelector('.submission a')
+    if(moment.isMoment(row.submissionDeadline)) {
+      submissionCell.textContent = row.submissionDeadline.fromNow()
+      submissionCell.setAttribute('title', row.submissionDeadline.format('dddd, MMMM Do, YYYY'))
+      submissionCell.parentElement.setAttribute('data-value', row.submissionDeadline.unix())
+    }
+    else {
+      submissionCell.textContent = row.submissionDeadline
+    }
     
     if(row.whereToSubmit.length > 0 && row.whereToSubmit !== 'TBD' && row.whereToSubmit !== 'TBA') {
       //Prepend "mailto:" to email addresses if it's not already there
       if(row.whereToSubmit.indexOf('@') !== -1 && row.whereToSubmit.substr(0, 'mailto:'.length) !== 'mailto:') {
         row.whereToSubmit = 'mailto:' + row.whereToSubmit
       }
-      submission.setAttribute('href', row.whereToSubmit)
+      submissionCell.setAttribute('href', row.whereToSubmit)
     }
     
-    newEntry.querySelector('.date').textContent = row.date
-    newEntry.querySelector('.location').textContent = row.location
+    var dateCell = newEntry.querySelector('.date')
+    if(moment.isMoment(row.startDate)) {
+      var dateText
+      if(!moment.isMoment(row.endDate)) {
+        dateText = row.startDate.format('MMMM D, YYYY')
+      }
+      else {
+        dateText = row.startDate.format('MMMM D') + ' — ' + row.endDate.format('D, YYYY')
+      }
+      dateCell.textContent = dateText
+      dateCell.setAttribute('title', row.startDate.fromNow())
+      dateCell.setAttribute('data-value', row.startDate.unix())
+    }
+    else {
+      dateCell.textContent = row.startDate
+    }
+    
+    var locationCell = newEntry.querySelector('.location')
+    locationCell.textContent = row.location
+    locationCell.setAttribute('data-value', row.location.split(',').map(function(s) { return s.trim() }).reverse().join(','))
     newEntry.querySelector('.notes').textContent = row.notes
         
     table.appendChild(newEntry)
   })
+  
+  entry.remove()
+  
+  Sortable.init()
+  
+  var initSort = document.querySelector('th[data-default-sort]')
+  if(initSort) {
+    initSort.click()
+  }
 }

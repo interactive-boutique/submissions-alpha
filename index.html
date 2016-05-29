@@ -6,40 +6,40 @@
         <title>Interactive Art & “Weird games” submission list</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/css/sortable-theme-bootstrap.min.css">
         <style>
-          #entries {
-            border-spacing: 20px;
-          }
-          
           .entry {
-            vertical-align: top;
+            /*vertical-align: top;*/
           }
           
           .notes {
-            max-width: 40vw;
+            max-width: 60vw;
           }
         </style>
     </head>
     <body>
       <h2>Interactive Art & “Weird games” submission list</h2>
       <h3>(Last updated <span id="updated">SOMETIME</span>)</h3>
-      <table id="entries">
-        <tr>
+      <table class="sortable-theme-bootstrap" data-sortable>
+        <thead>
           <th>Name</th>
           <th>Date</th>
           <th>Location</th>
-          <th>Submission deadline</th>
-          <th>Notes</th>
-        </tr>
-        <tr class="entry">
-          <td class="name"><a></a></td>
-          <td class="date"></td>
-          <td class="location"></td>
-          <td class="submission"><a></a></td>
-          <td class="notes"></td>
-        </tr>
+          <th data-default-sort>Submission deadline</th>
+          <th data-sortable="false">Notes</th>
+        </thead>
+        <tbody id="entries">
+          <tr class="entry">
+            <td class="name"><a></a></td>
+            <td class="date"></td>
+            <td class="location"></td>
+            <td class="submission"><a></a></td>
+            <td class="notes"></td>
+          </tr>
+        </tbody>
       </table>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/js/sortable.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
       <script src="index.js"></script>
       <script src="//spreadsheets.google.com/feeds/list/1m5t_Do_r89WhYfqQXnMdtgSfo4WGV-YqvES3wUKFnY8/od6/public/values?alt=json&callback=parseData"></script>
     </body>
