@@ -33,7 +33,8 @@ function parseData(res) {
   document.querySelector("#updated").textContent = moment(res.feed.updated.$t).fromNow()
   
   var entry = document.querySelector('.entry')
-  var table = document.querySelector('#entries')
+  var upcomingTable = document.querySelector('#upcoming-entries')
+  var pastTable = document.querySelector('#past-entries')
   
   data.forEach(function(row) {
     var newEntry = entry.cloneNode(true)
@@ -81,16 +82,22 @@ function parseData(res) {
     locationCell.textContent = row.location
     locationCell.setAttribute('data-value', row.location.split(',').map(function(s) { return s.trim() }).reverse().join(','))
     newEntry.querySelector('.notes').textContent = row.notes
-        
-    table.appendChild(newEntry)
+    
+    if(moment.isMoment(row.startDate) && row.startDate.isBefore()) {
+      submissionCell.parentElement.remove()
+      pastTable.appendChild(newEntry)
+    }
+    else {
+      upcomingTable.appendChild(newEntry)
+    }
   })
   
   entry.remove()
   
   Sortable.init()
   
-  var initSort = document.querySelector('th[data-default-sort]')
-  if(initSort) {
-    initSort.click()
+  var initSort = document.querySelectorAll('th[data-default-sort]')
+  if(initSort.length > 0) {
+    [].forEach.call(initSort, function(i) { i.click() })
   }
 }

@@ -8,6 +8,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/css/sortable-theme-bootstrap.min.css">
         <style>
+          header {
+            margin-bottom: 60px;
+          }
+          
+          small {
+            font-size: 0.6em;
+            color: #999;
+          }
+          
+          table {
+            margin-bottom: 60px;
+            width: 100%;
+          }
+          
           .entry {
             /*vertical-align: top;*/
           }
@@ -18,8 +32,10 @@
         </style>
     </head>
     <body>
-      <h2>Interactive Art & “Weird games” submission list</h2>
-      <h3>(Last updated <span id="updated">SOMETIME</span>)</h3>
+      <header>
+        <h1>Interactive Art & “Weird games” submission list <small>(Last updated <span id="updated">SOMETIME</span>)</small></h1>
+      </header>
+      <h2>Upcoming Events</h2>
       <table class="sortable-theme-bootstrap" data-sortable>
         <thead>
           <th>Name</th>
@@ -28,7 +44,7 @@
           <th data-default-sort>Submission deadline</th>
           <th data-sortable="false">Notes</th>
         </thead>
-        <tbody id="entries">
+        <tbody id="upcoming-entries">
           <tr class="entry">
             <td class="name"><a></a></td>
             <td class="date"></td>
@@ -36,6 +52,17 @@
             <td class="submission"><a></a></td>
             <td class="notes"></td>
           </tr>
+        </tbody>
+      </table>
+      <h2>Past Events</h2>
+      <table class="sortable-theme-bootstrap" data-sortable>
+        <thead>
+          <th>Name</th>
+          <th data-default-sort>Date</th>
+          <th>Location</th>
+          <th data-sortable="false">Notes</th>
+        </thead>
+        <tbody id="past-entries">
         </tbody>
       </table>
       <script src="//cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/js/sortable.min.js"></script>
