@@ -11,6 +11,8 @@ function parseData(res) {
     }
   })
   
+  document.querySelector("#updated").textContent = moment(res.feed.updated.$t).fromNow()
+  
   var entry = document.querySelector('.entry')
   var table = document.querySelector('#entries')
   
