@@ -33,6 +33,10 @@
             width: 100%;
           }
 
+          table[data-sortable].sortable-theme-bootstrap tbody td {
+            vertical-align: top;
+          }
+
           .entry {
             /*vertical-align: top;*/
           }
@@ -52,6 +56,9 @@
                 table[data-sortable] th, table[data-sortable] td {
                     display: block;
                 }
+                td {
+                  padding: 0 !important;
+                }
                 .name {
                     font-weight: 600;
                     padding-top: 4em !important;
@@ -69,7 +76,7 @@
       <header>
         <h1>Interactive submission list <small>(Last updated <span id="updated">SOMETIME</span>)</small></h1>
       </header>
-        <p>Curated list of conferences, festivals, and exhibitions taking submissions for interactives, altgames, elit, hypertext fiction, gamelikes, interactive installations, net art, and other digital/itneractive/experimental arts.</p>
+        <p>Curated list of conferences, festivals, and exhibitions taking submissions for interactives, altgames, e-lit, hypertext fiction, gamelikes, interactive installations, net art, and other digital/interactive/experimental arts.</p>
       <h2>Upcoming Events</h2>
       <table class="sortable-theme-bootstrap" data-sortable>
         <thead>
